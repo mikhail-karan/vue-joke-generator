@@ -16,31 +16,31 @@ export default {
       jokes: [
         {
           joke: "My wife handed me two kayak paddles and asked, 'Which one do you want?'",
-          punchline: "I said I'd take either/oar."
+          punchline: "I said I'd take either/oar.",
         },
         {
-          joke: "Courtesy of my 6yo daughter: What do you call a dinosaur that takes care of its teeth?",
-          punchline: "A Flossiraptor"
+          joke: 'Courtesy of my 6yo daughter: What do you call a dinosaur that takes care of its teeth?',
+          punchline: 'A Flossiraptor',
         },
         {
-          joke: "I am a programmer. A journalist asked me what makes a software code bad. I said...",
-          punchline: "No comment"
-        }
+          joke: 'I am a programmer. A journalist asked me what makes a software code bad. I said...',
+          punchline: 'No comment',
+        },
       ],
-      joke: "",
+      joke: '',
       jokeIterator: 0,
-      jokeText: ""
-    }
+      jokeText: '',
+    };
   },
   methods: {
-    generateJoke: function (){
-      let jokeNum = this.jokes.length
-      let jokeQuestion = this.jokes[this.jokeIterator].joke;
-      let jokePunchline = this.jokes[this.jokeIterator].punchline;
-      this.jokeText = jokeQuestion + "<br>" + jokePunchline;
-      if (this.jokeIterator < jokeNum-1){ this.jokeIterator++} else {this.jokeIterator = 0}
+    generateJoke() {
+      const jokeNum = this.jokes.length;
+      const jokeQuestion = this.jokes[this.jokeIterator].joke;
+      const jokePunchline = this.jokes[this.jokeIterator].punchline;
+      this.jokeText = `${jokeQuestion}<br>${jokePunchline}`;
+      if (this.jokeIterator < jokeNum - 1) { this.jokeIterator + 1; } else { this.jokeIterator = 0; }
     },
-  }
+  },
 };
 </script>
 
