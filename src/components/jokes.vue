@@ -11,8 +11,9 @@
 </template>
 
 <script>
-import JQuery from 'jquery'
-let $ = JQuery
+import JQuery from 'jquery';
+
+const $ = JQuery;
 
 export default {
   name: 'Jokes',
@@ -28,34 +29,34 @@ export default {
   },
   methods: {
     generateJoke() {
-      var jokeNum = this.jokes.length;
-      var jokeQuestion = this.jokes[this.jokeIterator].joke;
-      var jokePunchline = this.jokes[this.jokeIterator].punchline;
+      const jokeNum = this.jokes.length;
+      const jokeQuestion = this.jokes[this.jokeIterator].joke;
+      const jokePunchline = this.jokes[this.jokeIterator].punchline;
       this.jokeText = `${jokeQuestion}<br><br>${jokePunchline}`;
-      this.author =  `Reddit User: ${this.jokes[this.jokeIterator].author}`;
+      this.author = `Reddit User: ${this.jokes[this.jokeIterator].author}`;
       this.link = `<a href=http://reddit.com${this.jokes[this.jokeIterator].link}>Source</a>`;
-      if (this.jokeIterator < jokeNum - 1) { this.jokeIterator = this.jokeIterator + 1; } else { this.jokeIterator = 1; } //make sure iterator is always in scope
+      if (this.jokeIterator < jokeNum - 1) { this.jokeIterator = this.jokeIterator + 1; } else { this.jokeIterator = 1; } // make sure iterator is always in scope
     },
   },
-  created: function () {
-    var _this = this;
-    var _jokes = this.jokes;
-    $.getJSON('https://www.reddit.com/r/jokes.json', function (json) {
-        _this.json = json;
-        _this.json.data.children.forEach(element => {
-          var j = element.data.title;
-          var p = element.data.selftext;
-          var a = element.data.author;
-          var l = element.data.permalink;
-          _jokes.push({
-            joke: j,
-            punchline: p,
-            author: a,
-            link: l
-          });
+  created() {
+    const _this = this;
+    const _jokes = this.jokes;
+    $.getJSON('https://www.reddit.com/r/jokes.json', (json) => {
+      _this.json = json;
+      _this.json.data.children.forEach((element) => {
+        const j = element.data.title;
+        const p = element.data.selftext;
+        const a = element.data.author;
+        const l = element.data.permalink;
+        _jokes.push({
+          joke: j,
+          punchline: p,
+          author: a,
+          link: l,
         });
+      });
     });
-  }
+  },
 };
 </script>
 
