@@ -3,44 +3,59 @@
     <h1>Press a button, get a joke!</h1>
     <div class="joke-container">
       <div v-html="jokeText"></div>
+      <div class="author" v-html="author"></div>
+      <div class="link" v-html="link"></div>
     </div>
     <div v-on:click="generateJoke" class="button">Press me for a laugh</div>
   </div>
 </template>
 
 <script>
+import JQuery from 'jquery'
+let $ = JQuery
+
 export default {
   name: 'Jokes',
   data() {
     return {
-      jokes: [
-        {
-          joke: "My wife handed me two kayak paddles and asked, 'Which one do you want?'",
-          punchline: "I said I'd take either/oar.",
-        },
-        {
-          joke: 'Courtesy of my 6yo daughter: What do you call a dinosaur that takes care of its teeth?',
-          punchline: 'A Flossiraptor',
-        },
-        {
-          joke: 'I am a programmer. A journalist asked me what makes a software code bad. I said...',
-          punchline: 'No comment',
-        },
-      ],
+      jokes: [],
       joke: '',
-      jokeIterator: 0,
+      jokeIterator: 1,
       jokeText: '',
+      author: '',
+      link: '',
     };
   },
   methods: {
     generateJoke() {
-      const jokeNum = this.jokes.length;
-      const jokeQuestion = this.jokes[this.jokeIterator].joke;
-      const jokePunchline = this.jokes[this.jokeIterator].punchline;
-      this.jokeText = `${jokeQuestion}<br>${jokePunchline}`;
-      if (this.jokeIterator < jokeNum - 1) { this.jokeIterator + 1; } else { this.jokeIterator = 0; }
+      var jokeNum = this.jokes.length;
+      var jokeQuestion = this.jokes[this.jokeIterator].joke;
+      var jokePunchline = this.jokes[this.jokeIterator].punchline;
+      this.jokeText = `${jokeQuestion}<br><br>${jokePunchline}`;
+      this.author =  `Reddit User: ${this.jokes[this.jokeIterator].author}`;
+      this.link = `<a href=http://reddit.com${this.jokes[this.jokeIterator].link}>Source</a>`;
+      if (this.jokeIterator < jokeNum - 1) { this.jokeIterator = this.jokeIterator + 1; } else { this.jokeIterator = 1; } //make sure iterator is always in scope
     },
   },
+  created: function () {
+    var _this = this;
+    var _jokes = this.jokes;
+    $.getJSON('https://www.reddit.com/r/jokes.json', function (json) {
+        _this.json = json;
+        _this.json.data.children.forEach(element => {
+          var j = element.data.title;
+          var p = element.data.selftext;
+          var a = element.data.author;
+          var l = element.data.permalink;
+          _jokes.push({
+            joke: j,
+            punchline: p,
+            author: a,
+            link: l
+          });
+        });
+    });
+  }
 };
 </script>
 
@@ -69,7 +84,8 @@ a {
 }
 
 .joke-container {
-  height: 10vh;
+  min-height: 10vh;
+  max-width: 70vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -84,5 +100,12 @@ a {
   color: #fff;
   background-color: #42b983;
   width: 20vw;
+}
+
+.author, .link {
+  margin-top: 5px;
+  font-size: 0.75rem;
+  display: flex;
+  align-self: flex-start;
 }
 </style>
