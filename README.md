@@ -14,13 +14,9 @@ Vue Joke Generator is a simple test application built with Vue.js and jquery. It
 To get this project running in your own enviroment, 
 
 1. download and clone this repo
-2. run npm install
-3. then run npm run serve to start the development server
+2. run `npm install`
+3. then run `npm run serve` to start the development server
 4. navigate to [//localhost:8080](//localhost:8080)
-
-```
-npm install
-```
 
 ### Compiles and hot-reloads for development
 ```
