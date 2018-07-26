@@ -6,13 +6,12 @@
       <div class="author" v-html="author"></div>
       <div class="link" v-html="link"></div>
     </div>
-    <div v-on:click="generateJoke" class="button">Press me for a laugh</div>
+    <div v-on:click="generateJoke" class="button">I'm a button!</div>
   </div>
 </template>
 
 <script>
 import JQuery from 'jquery';
-
 const $ = JQuery;
 
 export default {
@@ -22,25 +21,26 @@ export default {
       jokes: [],
       joke: '',
       jokeIterator: 1,
-      jokeText: '',
+      jokeText: 'Pulling Jokes...',
       author: '',
       link: '',
     };
   },
   methods: {
-    generateJoke() {
+   generateJoke() {
       const jokeNum = this.jokes.length;
       const jokeQuestion = this.jokes[this.jokeIterator].joke;
       const jokePunchline = this.jokes[this.jokeIterator].punchline;
       this.jokeText = `${jokeQuestion}<br><br>${jokePunchline}`;
       this.author = `Reddit User: ${this.jokes[this.jokeIterator].author}`;
       this.link = `<a href=http://reddit.com${this.jokes[this.jokeIterator].link}>Source</a>`;
-      if (this.jokeIterator < jokeNum - 1) { this.jokeIterator = this.jokeIterator + 1; } else { this.jokeIterator = 1; } // make sure iterator is always in scope
+      if (this.jokeIterator < jokeNum - 1) { this.jokeIterator = this.jokeIterator + 1; } else { this.jokeIterator = 1; } // make sure iterator is always in bounds
     },
   },
-  created() {
+ created() {
     const _this = this;
     const _jokes = this.jokes;
+    const _generateJoke = this.generateJoke;
     $.getJSON('https://www.reddit.com/r/jokes.json', (json) => {
       _this.json = json;
       _this.json.data.children.forEach((element) => {
@@ -55,6 +55,7 @@ export default {
           link: l,
         });
       });
+      _generateJoke();
     });
   },
 };
